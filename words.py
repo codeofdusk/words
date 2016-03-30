@@ -1,4 +1,7 @@
 from collections import Counter
+from multiprocessing.dummy import Pool
+from functools import partial
+from time import time
 def generate_stripmap():
     "Returns a dictionary (map of keys to values) of punctuation and whitespace characters to be removed from strings. This function uses the constants provided by Python's string module."
     import string
@@ -79,20 +82,26 @@ if __name__ == '__main__':
     #Calculate the total number of files to analyze.
     total=len(pgpaths)+len(wppaths)
     print("A total of",total,"files to analyze. Starting Gutenberg analysis...")
-    #Create an empty counter to keep track of word frequency counts.
+    #Create a Pool for multiprocessing.
+    pool=Pool()
+    print("In multiprocessing mode, using " + str(pool._processes) + " threads.")
+    #Analyze Project Gutenberg
+    pgstart=time()
+    print("Starting Project Gutenberg Analysis…")
+    pgres=pool.map(partial(analyze,mode="Gutenberg",stripmap=sm),pgpaths)
+    pgend=time()
+    print("Project Gutenberg analysis took " + str(pgend-pgstart) + " seconds. Starting Wikipedia…")
+    #Analyze Wikipedia
+    wpstart=time()
+    wpres=pool.map(partial(analyze,mode="Wikipedia",stripmap=sm),wppaths)
+    wpend=time()
+    print("Done. Wikipedia analysis took " + str(wpend-wpstart) + " seconds. The experiment in total took " + str(wpend-pgstart) + " seconds.")
+    print("Consolidating results...")
     res=Counter()
-    #And a variable to keep track of how many files analyzed so far
-    count=0
-    for path in pgpaths:
-        res+=analyze(path,mode="Gutenberg",stripmap=sm)
-        count+=1
-        print("Analyzed",count,path)
-    print("Finished analyzing Gutenberg. Starting Wikipedia...")
-    for path in wppaths:
-        print("Analyzing",path)
-        res+=analyze(path,mode="Wikipedia",stripmap=sm)
-        count+=1
-        print("Analyzed",count,path)
-    print("Done. Generating CSV of top 100 words...")
+    for i in pgres:
+        res+=i
+    for i in wpres:
+        res+=i
+    print("Generating CSV of top 100 words...")
     get_top_words(res)
     print("Experiment complete.")
