@@ -1,3 +1,15 @@
+"""Words That Can't be Strangled
+Copyright 2015-2016 William Dengler
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 from collections import Counter
 from multiprocessing.dummy import Pool
 from functools import partial
@@ -60,6 +72,8 @@ def get_top_words(map,max=100,csvpath="out.csv"):
     fout.close()
 
 if __name__ == '__main__':
+    #Print copyright notice
+    print("Words That Can't be Strangled\nCopyright 2015-2016 William Dengler\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.")
     import os
     print("Generating stripmap...")
     sm=generate_stripmap()
