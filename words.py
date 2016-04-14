@@ -28,8 +28,10 @@ def generate_stripmap():
     res[45]=32
     return res
 
-def analyze(file,mode=None,stripmap=None):
-    "This function analyzes a plane text file, optionally skipping Gutenberg/Wikipedia header and footer, and returns a dictionary (mapping of keys to values) of words to their frequencies. A map of characters to strip from each word may also be provided for efficiency purposes if calling this function multiple times (as we do for this experiment), but if none is provided it will be generated before processing."
+def analyze(file,mode=None,stripmap=None,print=False):
+    "This function analyzes a plane text file, optionally skipping Gutenberg/Wikipedia header and footer, and returns a dictionary (mapping of keys to values) of words to their frequencies. A map of characters to strip from each word may also be provided for efficiency purposes if calling this function multiple times (as we do for this experiment), but if none is provided it will be generated before processing. Passing \'print=True\' will print the path of the file that is currently being analyzed, useful for interactive mode."
+    if print:
+        print("Analyzing",file)
     #If we don't have a stripmap, generate one.
     if stripmap==None:
         stripmap=generate_stripmap()
@@ -83,7 +85,7 @@ if __name__ == '__main__':
     threadgroup.add_argument("-t","--threaded",help="Run analysis in multiple threads (for efficiency).",action="store_const",dest="parallel",const="threaded")
     threadgroup.add_argument("-p","--parallel",help="Run analysis in multiple processes (for efficiency).",action="store_const",dest="parallel",const="parallel")
     threadgroup.add_argument("-n","--no-parallelism",help="Run analysis one-at-a-time (slower).",action="store_const",dest="parallel",const=None)
-    parser.set_defaults(parallel='threaded')
+    parser.set_defaults(parallel='parallel')
     args=parser.parse_args()
     if args.parallel == "threaded":
         from multiprocessing.dummy import Pool
@@ -128,12 +130,12 @@ if __name__ == '__main__':
         map_func=map
     else:
         map_func=pool.map
-    pgres=map_func(partial(analyze,mode="Gutenberg",stripmap=sm),pgpaths)
+    pgres=map_func(partial(analyze,mode="Gutenberg",stripmap=sm,print=True),pgpaths)
     pgend=time()
     print("Project Gutenberg analysis took " + str(pgend-pgstart) + " seconds. Starting Wikipedia…")
     #Analyze Wikipedia
     wpstart=time()
-    wpres=map_func(partial(analyze,mode="Wikipedia",stripmap=sm),wppaths)
+    wpres=map_func(partial(analyze,mode="Wikipedia",stripmap=sm,print=True),wppaths)
     wpend=time()
     print("Done. Wikipedia analysis took " + str(wpend-wpstart) + " seconds. The experiment in total took " + str(wpend-pgstart) + " seconds.")
     print("Consolidating results...")
