@@ -11,9 +11,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 from collections import Counter
-from multiprocessing.dummy import Pool
 from functools import partial
 from time import time
+
 def generate_stripmap():
     "Returns a dictionary (map of keys to values) of punctuation and whitespace characters to be removed from strings. This function uses the constants provided by Python's string module."
     import string
@@ -72,6 +72,19 @@ def get_top_words(map,max=100,csvpath="out.csv"):
     fout.close()
 
 if __name__ == '__main__':
+    #parse command-line arguments
+    import argparse
+    parser=argparse.ArgumentParser()
+    threadgroup=parser.add_mutually_exclusive_group()
+    threadgroup.add_argument("-t","--threaded",help="Run analysis in multiple threads (for efficiency).",action="store_const",dest="parallel",const="threaded")
+    threadgroup.add_argument("-p","--parallel",help="Run analysis in multiple processes (for efficiency).",action="store_const",dest="parallel",const="parallel")
+    threadgroup.add_argument("-n","--no-parallelism",help="Run analysis one-at-a-time (slower)",action="store_const",dest="parallel",const=None)
+    parser.set_defaults(parallel='threaded')
+    args=parser.parse_args()
+    if args.parallel == "threaded":
+        from multiprocessing.dummy import Pool
+    if args.parallel == "parallel":
+        from multiprocessing import Pool
     #Print copyright notice
     print("Words That Can't be Strangled\nCopyright 2015-2016 William Dengler\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.")
     import os
@@ -97,17 +110,26 @@ if __name__ == '__main__':
     total=len(pgpaths)+len(wppaths)
     print("A total of",total,"files to analyze.")
     #Create a Pool for multiprocessing.
-    pool=Pool()
-    print("In multiprocessing mode, using " + str(pool._processes) + " threads.")
+    if not args.parallel ==None:
+        pool=Pool()
+        if args.parallel == "threaded":
+            unit="threads"
+        elif args.parallel == "parallel":
+            unit="processes"
+        print("In parallel mode, using " + str(pool._processes) + " " + unit + ".")
     #Analyze Project Gutenberg
     pgstart=time()
     print("Starting Project Gutenberg Analysis…")
-    pgres=pool.map(partial(analyze,mode="Gutenberg",stripmap=sm),pgpaths)
+    if args.parallel == None:
+        map_func=map
+    else:
+        map_func=pool.map
+    pgres=map_func(partial(analyze,mode="Gutenberg",stripmap=sm),pgpaths)
     pgend=time()
     print("Project Gutenberg analysis took " + str(pgend-pgstart) + " seconds. Starting Wikipedia…")
     #Analyze Wikipedia
     wpstart=time()
-    wpres=pool.map(partial(analyze,mode="Wikipedia",stripmap=sm),wppaths)
+    wpres=map_func(partial(analyze,mode="Wikipedia",stripmap=sm),wppaths)
     wpend=time()
     print("Done. Wikipedia analysis took " + str(wpend-wpstart) + " seconds. The experiment in total took " + str(wpend-pgstart) + " seconds.")
     print("Consolidating results...")
@@ -116,6 +138,6 @@ if __name__ == '__main__':
         res+=i
     for i in wpres:
         res+=i
-    print("Generating CSV of top 100 words...")
+    print("Generating CSV...")
     get_top_words(res)
     print("Experiment complete.")
