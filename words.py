@@ -95,7 +95,7 @@ if __name__ == '__main__':
     print("Found",len(wppaths),"files.")
     #Calculate the total number of files to analyze.
     total=len(pgpaths)+len(wppaths)
-    print("A total of",total,"files to analyze. Starting Gutenberg analysis...")
+    print("A total of",total,"files to analyze.")
     #Create a Pool for multiprocessing.
     pool=Pool()
     print("In multiprocessing mode, using " + str(pool._processes) + " threads.")
