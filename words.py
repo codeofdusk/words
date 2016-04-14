@@ -58,7 +58,10 @@ def analyze(file,mode=None,stripmap=None):
     return Counter(words)
 
 def get_top_words(map,max=100,csvpath="out.csv"):
-    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words. Returns None."
+    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words (pass \'0\' for all words). Returns None."
+    #handle max=0
+    if max == 0:
+        max=None
     #Set up csv processing
     import csv
     #Create a file object where the csv data will be written
@@ -75,10 +78,11 @@ if __name__ == '__main__':
     #parse command-line arguments
     import argparse
     parser=argparse.ArgumentParser()
+    parser.add_argument("-w","--words",help="specify the number of words to include in the csv file, \'0\' for all.",default=100,type=int)
     threadgroup=parser.add_mutually_exclusive_group()
     threadgroup.add_argument("-t","--threaded",help="Run analysis in multiple threads (for efficiency).",action="store_const",dest="parallel",const="threaded")
     threadgroup.add_argument("-p","--parallel",help="Run analysis in multiple processes (for efficiency).",action="store_const",dest="parallel",const="parallel")
-    threadgroup.add_argument("-n","--no-parallelism",help="Run analysis one-at-a-time (slower)",action="store_const",dest="parallel",const=None)
+    threadgroup.add_argument("-n","--no-parallelism",help="Run analysis one-at-a-time (slower).",action="store_const",dest="parallel",const=None)
     parser.set_defaults(parallel='threaded')
     args=parser.parse_args()
     if args.parallel == "threaded":
@@ -139,5 +143,5 @@ if __name__ == '__main__':
     for i in wpres:
         res+=i
     print("Generating CSV...")
-    get_top_words(res)
+    get_top_words(res,max=args.words)
     print("Experiment complete.")
