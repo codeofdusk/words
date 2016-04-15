@@ -81,6 +81,7 @@ if __name__ == '__main__':
     import argparse
     parser=argparse.ArgumentParser()
     parser.add_argument("-w","--words",help="specify the number of words to include in the csv file, \'0\' for all.",default=100,type=int)
+    parser.add_argument("-r","--workers",help="The number of processes/threads to spawn when in parallel mode. Default is number of processor cores.",type=int)
     threadgroup=parser.add_mutually_exclusive_group()
     threadgroup.add_argument("-t","--threaded",help="Run analysis in multiple threads (for efficiency).",action="store_const",dest="parallel",const="threaded")
     threadgroup.add_argument("-p","--parallel",help="Run analysis in multiple processes (for efficiency).",action="store_const",dest="parallel",const="parallel")
@@ -117,7 +118,10 @@ if __name__ == '__main__':
     print("A total of",total,"files to analyze.")
     #Create a Pool for multiprocessing.
     if not args.parallel ==None:
-        pool=Pool()
+        if args.workers != None:
+            pool=Pool(args.workers)
+        else:
+            pool=Pool()
         if args.parallel == "threaded":
             unit="threads"
         elif args.parallel == "parallel":
