@@ -86,7 +86,7 @@ if __name__ == '__main__':
     threadgroup.add_argument("-t","--threaded",help="Run analysis in multiple threads (for efficiency).",action="store_const",dest="parallel",const="threaded")
     threadgroup.add_argument("-p","--parallel",help="Run analysis in multiple processes (for efficiency).",action="store_const",dest="parallel",const="parallel")
     threadgroup.add_argument("-n","--no-parallelism",help="Run analysis one-at-a-time (slower).",action="store_const",dest="parallel",const=None)
-    parser.set_defaults(parallel='parallel')
+    parser.set_defaults(parallel='threaded')
     args=parser.parse_args()
     if args.parallel == "threaded":
         from multiprocessing.dummy import Pool
