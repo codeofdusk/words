@@ -146,7 +146,7 @@ if __name__ == '__main__':
         elif args.parallel == "parallel":
             unit="processes"
         print("In parallel mode, using " + str(pool._processes) + " " + unit + ".")
-    if nocache:
+    if args.nocache:
         print("Caching disabled.")
     else:
         print("Caching enabled.")
