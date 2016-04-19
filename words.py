@@ -146,7 +146,7 @@ if __name__ == '__main__':
         elif args.parallel == "parallel":
             unit="processes"
         print("In parallel mode, using " + str(pool._processes) + " " + unit + ".")
-    if args.nocache:
+    if args.no_cache:
         print("Caching disabled.")
     else:
         print("Caching enabled.")
@@ -157,12 +157,12 @@ if __name__ == '__main__':
         map_func=map
     else:
         map_func=pool.map
-    pgres=map_func(partial(analyze,mode="Gutenberg",stripmap=sm,verbose=True,nocache=args.nocache),pgpaths)
+    pgres=map_func(partial(analyze,mode="Gutenberg",stripmap=sm,verbose=True,nocache=args.no_cache),pgpaths)
     pgend=time()
     print("Project Gutenberg analysis took " + str(pgend-pgstart) + " seconds. Starting Wikipedia…")
     #Analyze Wikipedia
     wpstart=time()
-    wpres=map_func(partial(analyze,mode="Wikipedia",stripmap=sm,verbose=True,nocache=args.nocache),wppaths)
+    wpres=map_func(partial(analyze,mode="Wikipedia",stripmap=sm,verbose=True,nocache=args.no_cache),wppaths)
     wpend=time()
     print("Done. Wikipedia analysis took " + str(wpend-wpstart) + " seconds. The experiment in total took " + str(wpend-pgstart) + " seconds.")
     print("Consolidating results...")
