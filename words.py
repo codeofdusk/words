@@ -170,15 +170,15 @@ if __name__ == '__main__':
     pgtotal=len(pgres)
     pgcount=0
     for i in pgres:
-    pgcount+=1
-    print("Consolidating",pgcount,"of",pgtotal,"Project Gutenberg files.")
+        pgcount+=1
+        print("Consolidating",pgcount,"of",pgtotal,"Project Gutenberg files.")
         res+=i
     print("Project Gutenberg consolidation complete.")
     wptotal=len(wpres)
     wpcount=0
     for i in wpres:
-    wpcount+=1
-    print("Analyzing",wpcount,"of",wptotal)
+        wpcount+=1
+        print("Analyzing",wpcount,"of",wptotal)
         res+=i
     print("Generating CSV...")
     get_top_words(res,max=args.words)
