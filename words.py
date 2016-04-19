@@ -146,6 +146,10 @@ if __name__ == '__main__':
         elif args.parallel == "parallel":
             unit="processes"
         print("In parallel mode, using " + str(pool._processes) + " " + unit + ".")
+    if nocache:
+        print("Caching disabled.")
+    else:
+        print("Caching enabled.")
     #Analyze Project Gutenberg
     pgstart=time()
     print("Starting Project Gutenberg Analysis…")
