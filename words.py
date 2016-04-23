@@ -50,20 +50,19 @@ def analyze(file,mode=None,stripmap=None,verbose=False,nocache=False):
     import chardet
     enc=chardet.detect(open(file,'br').read())['encoding']
     #Fin is the file object. We will open it using the detected encoding to collect its text (sans headers if Gutenberg), then close it.
-    fin=open(file,encoding=enc,errors='ignore')
-    #words is an empty list which we will populate with all words from the source text.
-    words=[]
-    if mode=='Gutenberg':
-        from gutenberg.cleanup import strip_headers
-        text=strip_headers(''.join(fin.readlines()))
-    elif mode=='Wikipedia':
-        text=''
-        for line in fin:
-            if "<doc" not in line and "</doc" not in line:
-                text+=line
-    else:
-        text=''.join(fin.readlines())
-    fin.close()
+    with open(file,encoding=enc,errors='ignore') as fin:
+        #words is an empty list which we will populate with all words from the source text.
+        words=[]
+        if mode=='Gutenberg':
+            from gutenberg.cleanup import strip_headers
+            text=strip_headers(''.join(fin.readlines()))
+        elif mode=='Wikipedia':
+            text=''
+            for line in fin:
+                if "<doc" not in line and "</doc" not in line:
+                    text+=line
+        else:
+            text=''.join(fin.readlines())
     #The text we've extracted is full of punctuation, capitalization, and newlines which are undesirable for our purposes. We just want the words.
     for word in text.split():
         words.extend(word.translate(stripmap).lower().split())
@@ -71,12 +70,10 @@ def analyze(file,mode=None,stripmap=None,verbose=False,nocache=False):
     res = Counter(words)
     if not nocache:
         import pickle
-        cam=open(get_cache_filename(file),"wb")
-        pickle.dump(res,cam)
-        fin.close()
+        with open(get_cache_filename(file),"wb") as cam:
+            pickle.dump(res,cam)
     return res
-def get_top_words(map,max=100,csvpath="out.csv"):
-    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words (pass \'0\' for all words). Returns None."
+def get_top_words(map,max=100,csvpath="out.csv"    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words (pass \'0\' for all words). Returns None."
     #handle max=0
     if max == 0:
         max=None
