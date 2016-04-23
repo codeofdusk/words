@@ -73,7 +73,8 @@ def analyze(file,mode=None,stripmap=None,verbose=False,nocache=False):
         with open(get_cache_filename(file),"wb") as cam:
             pickle.dump(res,cam)
     return res
-def get_top_words(map,max=100,csvpath="out.csv"    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words (pass \'0\' for all words). Returns None."
+def get_top_words(map,max=100,csvpath="out.csv"):
+    "Get the most frequently occurring words from a dictionary in the form returned by analyze. By default, it saves its results to out.csv in the current directory, but you may optionally pass a different path. A maximum number of top words to print may also be specified, 100 by default since this experiment will use the top 100 words (pass \'0\' for all words). Returns None."
     #handle max=0
     if max == 0:
         max=None
