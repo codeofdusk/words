@@ -166,14 +166,16 @@ if __name__ == '__main__':
     res=Counter()
     pgtotal=len(pgres)
     pgcount=0
-    for i in pgres:
+    while len(pgres) > 0:
+        i=pgres.pop()
         pgcount+=1
         print("Consolidating",pgcount,"of",pgtotal,"Project Gutenberg files.")
         res+=i
     print("Project Gutenberg consolidation complete.")
     wptotal=len(wpres)
     wpcount=0
-    for i in wpres:
+    while len(wpres) > 0:
+        i=wpres.pop()
         wpcount+=1
         print("Analyzing",wpcount,"of",wptotal)
         res+=i
