@@ -29,11 +29,11 @@ These instructions have been written for [Debian](http://debian.org)-based Gnu/L
 		cd words
 
 ####A note on branches
-The `master` branch of this repository contains `words.py` with some improvements, notably multithreading support and the usage of the built-in `Counter` datatype as opposed to the `dict` datatype with manual counting. The `master` branch has not been extensively tested. The `original` branch contains the code originally entered into the [Sea Island Regional Science Fair](http://sirsf.org) which has only been modified to show a GPL3 notice on launch.
+The `master` branch contains the code originally entered into the [Sea Island Regional Science Fair](http://sirsf.org) which has only been modified to show a GPL3 notice on launch.
+The `master` branch of this repository contains `words.py` with some improvements, notably multithreading support and the usage of the built-in `Counter` datatype as opposed to the `dict` datatype with manual counting. The `master` branch has not been extensively tested. 
+To use the `dev` branch, run the following command from inside the `words` directory:
 
-To use the `original` branch, run the following command from inside the `words` directory:
-
-	git checkout original
+	git checkout dev
 
 By default, `git` will checkout the `master` branch, so no additional commands are necessary to proceed on that branch. Of course, doing a `git checkout master` will switch to the master branch if you are on another.
 
@@ -119,7 +119,7 @@ Monitor progress with `tail -f nohup.out` and run `rm nohup.out` when done to de
 
 ## Notes
 ### Command-line options
-If you are using the `master` branch, `words.py` supports several command-line options. To view them, run:
+If you are using the `dev` branch, `words.py` supports several command-line options. To view them, run:
 
 		python3 words.py --help
 From the `words` directory. When running the program (step 3 of data analysis above), you can supply any options between `words.py` and the & sign.
