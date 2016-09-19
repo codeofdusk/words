@@ -41,11 +41,9 @@ By default, `git` will checkout the `master` branch, so no additional commands a
 1. Download a Wikipedia database dump. To download the latest Wikipedia database dump, run the following command:
 
 		wget -b http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
-
 If, instead, you want to download the database dump taken on September 1, 2015 (in order to reproduce the experiment), run the following command:
 
 		wget -b http://dumps.wikimedia.org/enwiki/20150901/enwiki-20150901-pages-articles.xml.bz2
-
 The -b switch causes the download to run in the background, as it takes a while and is several gigabytes in size. Run `tail -f wget-log` to monitor progress. Run `rm wget-log` when the download completes to remove the log file as it is not part of the data to be analyzed.
 
 2. Decompress the Wikipedia database dump with one of the following commands (depending on the database dump you chose):
