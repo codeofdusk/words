@@ -123,10 +123,8 @@ If you are using the `dev` branch, `words.py` supports several command-line opti
 		python3 words.py --help
 From the `words` directory. When running the program (step 3 of data analysis above), you can supply any options between `words.py` and the & sign.
 ###Determining experiment start and end times
-Note : if you are using the `master` branch, the program will print the duration of each analysis, so just view `nohup.out`. If you are using the `original` branch, the following steps apply:
+Note : if you are using the `dev` branch, the program will print the duration of each analysis, so just view `nohup.out`. If you are using the `master` branch, the following steps apply:
 1. Determine the experiment start time by finding the modified time of words.py with the following command (times will be in UTC unless system time is changed):
-
 		stat words.py
 2. Determine the experiment end time by finding the modified time of the final log file written by nohup with the following command (times will be in UTC unless system time is changed):
-
 		stat nohup.out
