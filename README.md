@@ -49,7 +49,6 @@ The -b switch causes the download to run in the background, as it takes a while 
 ###Preparing Wikipedia data
 1. Decompress the Wikipedia database dump with one of the following commands (depending on the database dump you chose):
 		bunzip2 enwiki-latest-pages-articles.xml.bz2
-
 Or
 		bunzip2 enwiki-20150901-pages-articles.xml.bz2
 
