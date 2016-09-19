@@ -30,7 +30,7 @@ These instructions have been written for [Debian](http://debian.org)-based Gnu/L
 
 ####A note on branches
 The `master` branch contains the code originally entered into the [Sea Island Regional Science Fair](http://sirsf.org) which has only been modified to show a GPL3 notice on launch.
-The `master` branch of this repository contains `words.py` with some improvements, notably multithreading support and the usage of the built-in `Counter` datatype as opposed to the `dict` datatype with manual counting. The `master` branch has not been extensively tested. 
+The `dev` branch of this repository contains `words.py` with some improvements, notably multithreading support and the usage of the built-in `Counter` datatype as opposed to the `dict` datatype with manual counting. The `dev` branch has not been extensively tested. 
 To use the `dev` branch, run the following command from inside the `words` directory:
 
 	git checkout dev
