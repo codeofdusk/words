@@ -37,8 +37,8 @@ To use the `dev` branch, run the following command from inside the `words` direc
 
 By default, `git` will checkout the `master` branch, so no additional commands are necessary to proceed on that branch. Of course, doing a `git checkout master` will switch to the master branch if you are on another.
 
-###Preparing Wikipedia data
-1. Download a Wikipedia database dump. To download the latest Wikipedia database dump, run the following command:
+### Downloading Wikipedia Data
+Download a Wikipedia database dump. To download the latest Wikipedia database dump, run the following command:
 
 		wget -b http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 If, instead, you want to download the database dump taken on September 1, 2015 (in order to reproduce the experiment), run the following command:
@@ -46,16 +46,17 @@ If, instead, you want to download the database dump taken on September 1, 2015 (
 		wget -b http://dumps.wikimedia.org/enwiki/20150901/enwiki-20150901-pages-articles.xml.bz2
 The -b switch causes the download to run in the background, as it takes a while and is several gigabytes in size. Run `tail -f wget-log` to monitor progress. Run `rm wget-log` when the download completes to remove the log file as it is not part of the data to be analyzed.
 
-2. Decompress the Wikipedia database dump with one of the following commands (depending on the database dump you chose):
+###Preparing Wikipedia data
+1. Decompress the Wikipedia database dump with one of the following commands (depending on the database dump you chose):
 		bunzip2 enwiki-latest-pages-articles.xml.bz2
 
 Or
 		bunzip2 enwiki-20150901-pages-articles.xml.bz2
 
-3. Download WikiExtractor, a script which extracts text from Wikipedia dumps, with the following command:
+2. Download WikiExtractor, a script which extracts text from Wikipedia dumps, with the following command:
 
 		wget http://medialab.di.unipi.it/Project/SemaWiki/Tools/WikiExtractor.py
-4. Run the script (using nohup so it can run even while disconnected from SSH as it takes a while) with one of the following commands (depending on the dump you chose):
+3. Run the script (using nohup so it can run even while disconnected from SSH as it takes a while) with one of the following commands (depending on the dump you chose):
 
 		nohup python2 Wikiextractor.py --output Wikipedia --no-templates enwiki-latest-pages-articles.xml &
 or
@@ -67,7 +68,7 @@ Monitor the log with tail:
 And when it has stopped, delete the log as it is not part of the data to be analyzed:
 
 		rm nohup.out
-5. Delete the Wikipedia xml dump (since the text has already been extracted) with the following command:
+4. Delete the Wikipedia xml dump (since the text has already been extracted) with the following command:
 
 		rm enwiki*.xml
 and WikiExtractor:
