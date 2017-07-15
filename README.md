@@ -1,9 +1,9 @@
-#Words That Can't Be Strangled
+# Words That Can't Be Strangled
 Words That Can't Be Strangled was a project entered into the [Sea Island Regional Science Fair](http://sirsf.org). The purpose of the project was to determine the top 100 most frequently used English words, based on the text of [Project Gutenberg](http://gutenberg.org) and the [English Wikipedia](http://en.wikipedia.org). This repository contains the program I wrote to run the experiment and instructions to reproduce the experiment using your own setup.
 
 I have released this program as [free software](http://www.gnu.org/philosophy/free-sw.en.html) in the hope that it will be useful, but without warranty of any kind. See [the license](copying.txt) for more information. If you make improvements to this program, I encourage you to fork this repository and send me a pull request with your changes.
 
-##Things you'll need
+# # Things you'll need
 * Computer with sufficient resources to run the analysis uninterrupted (I used a dedicated cloud instance from [Vultr](http://vultr.com)) running [Ubuntu GNU/Linux](http://ubuntu.com) 14.04.
 * [Python](http://python.org) interpreter, both version 2 and 3 (this program is written in Python 3, but Wikiextractor is written in 2)
 * A clone of this repository.
@@ -13,10 +13,10 @@ I have released this program as [free software](http://www.gnu.org/philosophy/fr
 * Spreadsheet software capable of reading files in .csv format.
 * `zip` and `unzip` packages
 
-##running the experiment
+# # running the experiment
 These instructions have been written for [Debian](http://debian.org)-based Gnu/Linux distributions such as [Ubuntu](http://ubuntu.com), but these procedures could easily be run on any platform, as long as the necessary software is available.
 
-###Cloning the repository
+# # # Cloning the repository
 1. Install `git` with the following command:
 		apt install git
 
@@ -28,7 +28,7 @@ These instructions have been written for [Debian](http://debian.org)-based Gnu/L
 
 		cd words
 
-####A note on branches
+# # # # A note on branches
 The `master` branch contains the code originally entered into the [Sea Island Regional Science Fair](http://sirsf.org) which has only been modified to show a GPL3 notice on launch.
 The `dev` branch of this repository contains `words.py` with some improvements, notably multithreading support and the usage of the built-in `Counter` datatype as opposed to the `dict` datatype with manual counting. The `dev` branch has not been extensively tested. 
 To use the `dev` branch, run the following command from inside the `words` directory:
@@ -37,7 +37,7 @@ To use the `dev` branch, run the following command from inside the `words` direc
 
 By default, `git` will checkout the `master` branch, so no additional commands are necessary to proceed on that branch. Of course, doing a `git checkout master` will switch to the master branch if you are on another.
 
-### Downloading Wikipedia Data
+# # # Downloading Wikipedia Data
 Download a Wikipedia database dump. To download the latest Wikipedia database dump, run the following command:
 
 		wget -b http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
@@ -46,7 +46,7 @@ If, instead, you want to download the database dump taken on September 1, 2015 (
 		wget -b http://dumps.wikimedia.org/enwiki/20150901/enwiki-20150901-pages-articles.xml.bz2
 The -b switch causes the download to run in the background, as it takes a while and is several gigabytes in size. Run `tail -f wget-log` to monitor progress. Run `rm wget-log` when the download completes to remove the log file as it is not part of the data to be analyzed.
 
-###Preparing Wikipedia data
+# # # Preparing Wikipedia data
 1. Decompress the Wikipedia database dump with one of the following commands (depending on the database dump you chose):
 		bunzip2 enwiki-latest-pages-articles.xml.bz2
 Or
@@ -74,7 +74,7 @@ and WikiExtractor:
 
 		rm WikiExtractor.py
 
-###Preparing Project Gutenberg texts for analysis
+# # # Preparing Project Gutenberg texts for analysis
 1. Download all English texts from Project Gutenberg (very large) with the following command (based on an example from [here](http://www.gutenberg.org/wiki/Gutenberg:Information_About_Robot_Access_to_our_Pages)):
 
 		wget -w 0.5 -b -m -H "http://www.gutenberg.org/robot/harvest?filetypes[]=txt&langs[]=en"
@@ -103,7 +103,7 @@ Monitor progress with `tail -f nohup.out` and run `rm nohup.out` when done to de
 
 		rm -rf www.gutenberg.lib.md.us
 
-###Data analysis
+# # # Data analysis
 1. Install the gutenberg and chardet package with the following commands:
 
 		apt install python3-pip libdb-dev libdb++-dev
@@ -116,13 +116,13 @@ Monitor progress with `tail -f nohup.out` and run `rm nohup.out` when done to de
 		nohup python3 -u words.py &
 4. Copy the output file, "out.csv", to a machine with spreadsheet software and open it to view the results.
 
-## Notes
-### Command-line options
+# # Notes
+# # # Command-line options
 If you are using the `dev` branch, `words.py` supports several command-line options. To view them, run:
 
 		python3 words.py --help
 From the `words` directory. When running the program (step 3 of data analysis above), you can supply any options between `words.py` and the & sign.
-###Determining experiment start and end times
+# # # Determining experiment start and end times
 Note : if you are using the `dev` branch, the program will print the duration of each analysis, so just view `nohup.out`. If you are using the `master` branch, the following steps apply:
 
 1. Determine the experiment start time by finding the modified time of words.py with the following command (times will be in UTC unless system time is changed):
